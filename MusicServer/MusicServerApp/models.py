@@ -43,14 +43,14 @@ class Device(models.Model):
         blank=False,
 
     )
-    sentСommands = models.ForeignKey('sentСommands',
-                                     verbose_name='Принятые команды',
-                                     on_delete=models.PROTECT,
-                                     null=True)
-    statusData = models.ForeignKey("statusData",
-                                   verbose_name='информация по состоянию устройства',
-                                   on_delete=models.PROTECT,
-                                   null=True)
+    sentСommands = models.OneToOneField('sentСommands',
+                                        verbose_name='Принятые команды',
+                                        on_delete=models.PROTECT,
+                                        null=True)
+    statusData = models.OneToOneField("statusData",
+                                      verbose_name='информация по состоянию устройства',
+                                      on_delete=models.PROTECT,
+                                      null=True)
 
 
 class statusData(models.Model):
