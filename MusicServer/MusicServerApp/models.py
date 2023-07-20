@@ -1,26 +1,11 @@
 from django.db import models
 
-import os
-from uuid import uuid1
-
 
 class Device(models.Model):
     class Meta:
         db_table = 'Device'
         verbose_name = 'Музыкальный аппарат'
         verbose_name_plural = 'Музыкальные аппараты'
-
-    def get_StartedLogs_path(self, filename):
-        result = os.path.join('DeviceLogs/StartedLogs/', str(self.id), uuid1().hex, '%Y/%m/%d/%H/%M/%S')
-        if '.' in filename:
-            result = os.path.join(result, filename.split('.')[-1])
-        return result
-
-    def get_RunTimeLogs_path(self, filename):
-        result = os.path.join('DeviceLogs/StartedLogs/', str(self.id), uuid1().hex, '%Y/%m/%d/%H/%M/%S')
-        if '.' in filename:
-            result = os.path.join(result, filename.split('.')[-1])
-        return result
 
     id = models.UUIDField(primary_key=True)
     namePlace = models.TextField(verbose_name="Место нахождения", blank=False)
@@ -30,27 +15,20 @@ class Device(models.Model):
     timeUpdate = models.DateTimeField(verbose_name='Время последнего обновления',
                                       blank=False,
                                       auto_now=True)
-    startedLogsPath = models.FileField(
-        verbose_name='Путь к логам старта',
-        upload_to=get_StartedLogs_path,
-        blank=False,
+    startedLogs = models.TextField(verbose_name="логи старта", blank=False)
 
-    )
+    runTimeLogs = models.TextField(verbose_name="логи работы", blank=False)
 
-    runTimeLogs = models.FileField(
-        verbose_name='Путь к логам работы',
-        upload_to=get_RunTimeLogs_path,
-        blank=False,
-
-    )
     sentСommands = models.OneToOneField('sentСommands',
-                                        verbose_name='Принятые команды',
+                                        verbose_name='отправленная команда',
                                         on_delete=models.PROTECT,
-                                        null=True)
+                                        null=True,
+                                        blank=True)
     statusData = models.OneToOneField("statusData",
                                       verbose_name='информация по состоянию устройства',
                                       on_delete=models.PROTECT,
-                                      null=True)
+                                      null=True,
+                                      blank=True)
 
 
 class statusData(models.Model):
