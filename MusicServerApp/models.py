@@ -30,6 +30,10 @@ class Device(models.Model):
                                       null=True,
                                       blank=True)
 
+    @classmethod
+    def as_asgi(cls):
+        pass
+
 
 class statusData(models.Model):
     class Meta:

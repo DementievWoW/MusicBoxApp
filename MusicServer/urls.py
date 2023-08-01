@@ -17,6 +17,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from MusicServerApp.views import DeviceAPIView
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/v1/device', DeviceAPIView.as_view())
 ]
