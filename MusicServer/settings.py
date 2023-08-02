@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'MusicServerApp.apps.MusicserverappConfig',
 
-
 ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -56,6 +55,44 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'MusicServer.urls'
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'fmt1': {
+            'format': '[FMT1] %(asctime)-15s %(message)s',
+        },
+        'fmt2': {
+            'format': '[FMT2] %(asctime)-15s %(message)s',
+        }
+    },
+    'handlers': {
+        'console1': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'fmt1',
+        },
+        'console2': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'fmt2',
+        },
+    },
+    # First config for root logger: console1 -> fmt1
+    'root': {
+        'handlers': ['console1'],
+        'level': 'DEBUG',
+        'propagate': True,
+    },
+    'loggers': {
+        # Second config for root logger: console2 -> fmt2
+        '': {
+            'handlers': ['console2'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -138,5 +175,3 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-

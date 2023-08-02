@@ -13,17 +13,27 @@ import uuid
 clients = {}
 
 
-class DeviceConsumer(AsyncWebsocketConsumer):
+class DeviceConsumer(AsyncJsonWebsocketConsumer):
     async def connect(self):
         await self.accept()
         global clients
-        await self.send("fdkfkd")
+        await self.send("Подключение прошло успешно")
 
+    async def disconnect(self, code):
+        await self.send("Устройство отключено")
+        await self.close()
+
+    async def receive(self, text_data=None, bytes_data=None, **kwargs):
+        logging.info(text_data)
+
+    # async def receive_json(self, content, **kwargs):
+    #     # Called with either text_data or bytes_data for each frame
+    #     # You can call:
+    #     logging.info("receive_json"+content)
+    #     await self.send(text_data="Hello world!")
 
 # clients = {}
 
-async def disconnect(self):
-    pass
 # class DeviceConsumer(AsyncWebsocketConsumer):
 # class DeviceConsumer(WebsocketConsumer):
 #     # queryset = Device.id
