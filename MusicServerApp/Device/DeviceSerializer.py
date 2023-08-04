@@ -1,9 +1,10 @@
 from rest_framework import serializers
 
-from .models import Device
+from MusicServerApp.models import Device
 
 
 class DeviceSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Device
-        fields = ('namePlace')
+        fields = '__all__'

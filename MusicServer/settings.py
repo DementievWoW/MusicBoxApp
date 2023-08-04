@@ -26,7 +26,6 @@ SECRET_KEY = 'django-insecure-i*881^k68*#xr73-@b*tz69%*^oj5n7ppteou587kif$*l15c0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -40,12 +39,18 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "channels",
     'rest_framework',
+    'rest_framework.authtoken',
+    'djoser',
     'MusicServerApp.apps.MusicserverappConfig',
+    'corsheaders',
 
 ]
+ALLOWED_HOSTS = ["*"]
+CORS_ALLOW_ALL_ORIGINS = True
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',  # core
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -136,7 +141,15 @@ DATABASES = {
         'PORT': '5432'
     }
 }
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
 
+}
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 

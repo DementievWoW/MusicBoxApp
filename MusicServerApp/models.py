@@ -8,6 +8,7 @@ class Device(models.Model):
         verbose_name_plural = 'Музыкальные аппараты'
 
     id = models.UUIDField(primary_key=True)
+    Password = models.TextField(verbose_name="Пароль", blank=True)
     namePlace = models.TextField(verbose_name="Место нахождения", blank=False)
     timeCreate = models.DateTimeField(verbose_name='Время создания',
                                       blank=False,
@@ -19,21 +20,19 @@ class Device(models.Model):
 
     runTimeLogs = models.TextField(verbose_name="логи работы", blank=False)
 
-    sentСommands = models.OneToOneField('sentСommands',
-                                        verbose_name='отправленная команда',
-                                        on_delete=models.PROTECT,
-                                        null=True,
-                                        blank=True)
-    statusData = models.OneToOneField("statusData",
-                                      verbose_name='информация по состоянию устройства',
-                                      on_delete=models.PROTECT,
-                                      null=True,
-                                      blank=True)
+
+
 
 class statusData(models.Model):
     class Meta:
         db_table = 'statusData'
         verbose_name = 'информация по состоянию устройства'
+
+    Device = models.ForeignKey(Device,
+                               verbose_name='информация по состоянию устройства',
+                               on_delete=models.PROTECT,
+                               null=True,
+                               blank=True)
 
     name = models.CharField(max_length=100, db_index=True)
     physicalСores = models.TextField(verbose_name="Физические ядра", blank=True)
@@ -57,26 +56,25 @@ class statusData(models.Model):
     webByteRecv = models.TextField(verbose_name="Сеть, байт принято", blank=True)
     # температура только для linux
     temp = models.TextField(verbose_name="Текущая температура", blank=True)
-    timeCreate = models.DateTimeField(verbose_name='Время создания',
-                                      blank=True,
-                                      auto_now_add=True)
-
+    timeCreateMSK = models.DateTimeField(verbose_name='Время создания отчета на машине',
+                                         blank=False)
 
     def __str__(self):
-        return f'{self.name} {self.timeCreate}'
-
+        return f'{self.name} {self.timeCreateMSK}'
 
 class sentСommands(models.Model):
     class Meta:
         db_table = 'sentСommands'
         verbose_name = 'отправленная команда'
         verbose_name_plural = 'отправленные команды'
+    Device = models.ForeignKey(Device,
+                                     verbose_name='отправленная команда',
+                                     on_delete=models.PROTECT,
+                                     null=True,
+                                     blank=True)
 
     id = models.UUIDField(primary_key=True)
-    commandType = models.ForeignKey('commandType',
-                                    verbose_name="Тип команды",
-                                    on_delete=models.PROTECT,
-                                    null=True)
+
     timeCreate = models.DateTimeField(verbose_name='Время отправки команды',
                                       blank=False,
                                       auto_now_add=True)
@@ -90,7 +88,10 @@ class commandType(models.Model):
         db_table = 'commandType'
         verbose_name = 'Тип команды'
         verbose_name_plural = 'Типы команд'
-
+    sentСommands = models.ForeignKey(sentСommands,
+                                    verbose_name="Тип команды",
+                                    on_delete=models.PROTECT,
+                                    null=True)
     name = models.CharField(max_length=100, db_index=True)
 
     def __str__(self):
