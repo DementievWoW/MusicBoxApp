@@ -15,7 +15,6 @@ from django.core.asgi import get_asgi_application
 from channels.routing import ProtocolTypeRouter, URLRouter
 
 from MusicServerApp.Device.DeviceConsumer import DeviceConsumer
-from MusicServerApp.TokenAuthMiddleWare import TokenAuthMiddleWare
 
 from channels.routing import ProtocolTypeRouter, URLRouter
 from channels.security.websocket import AllowedHostsOriginValidator
@@ -27,16 +26,16 @@ from MusicServerApp import routing
 
 application = ProtocolTypeRouter({
     "http": get_asgi_application(),
-    # "websocket": AuthMiddlewareStack(
-    #     URLRouter(
-    #         routing.websocket_urlpatterns
-    #     )
-    # )
-    "websocket": TokenAuthMiddleWare(
-        AllowedHostsOriginValidator(URLRouter(
+    "websocket": AuthMiddlewareStack(
+        URLRouter(
             routing.websocket_urlpatterns
-        ))
+        )
     )
+    # "websocket": TokenAuthMiddleWare(
+    #     AllowedHostsOriginValidator(URLRouter(
+    #         routing.websocket_urlpatterns
+    #     ))
+    # )
     # "websocket": tokenAuthMiddleWareStack(
     #     URLRouter(
     #         routing.websocket_urlpatterns

@@ -22,10 +22,7 @@ from django.urls import path, re_path, include
 from rest_framework.authtoken import views
 from rest_framework.authtoken.views import obtain_auth_token
 
-from MusicServerApp.views import loginView, ofdlkd
 
 urlpatterns = [
-    path('adv', ofdlkd),
     path('admin/', admin.site.urls),
-    path("api/login/", loginView),
 ]

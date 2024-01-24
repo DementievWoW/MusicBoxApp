@@ -25,7 +25,15 @@ SECRET_KEY = 'django-insecure-i*881^k68*#xr73-@b*tz69%*^oj5n7ppteou587kif$*l15c0
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('localhost', 6379)],
 
+        },
+    }
+}
 
 # Application definition
 
@@ -42,15 +50,15 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'djoser',
     'MusicServerApp.apps.MusicserverappConfig',
-    'corsheaders',
+    # 'corsheaders',
 
 ]
-ALLOWED_HOSTS = ["*"]
-CORS_ALLOW_ALL_ORIGINS = True
+# ALLOWED_HOSTS = ["*"]
+# CORS_ALLOW_ALL_ORIGINS = True
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',  # core
+    # 'corsheaders.middleware.CorsMiddleware',  # core
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -98,6 +106,7 @@ LOGGING = {
         },
     },
 }
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
